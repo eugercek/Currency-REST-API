@@ -20,6 +20,7 @@ namespace API
         {
 
             services.AddControllers();
+            services.AddSwaggerDocument();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -27,10 +28,12 @@ namespace API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
             }
 
             app.UseRouting();
-
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

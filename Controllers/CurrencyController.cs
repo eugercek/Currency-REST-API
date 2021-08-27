@@ -23,7 +23,6 @@ namespace API.Controllers
 
             for (int i = 0; i < n; i++)
             {
-
                 curs.Add(new Currency
                 {
                     Name = rand.NextDouble().ToString(),
