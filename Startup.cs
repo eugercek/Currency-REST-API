@@ -21,7 +21,10 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.ReturnHttpNotAcceptable = true;
+            }).AddXmlSerializerFormatters();
             services.AddSwaggerDocument();
             services.AddDbContext<CurrencyContext>(
                  options => options.UseSqlite(Configuration.GetConnectionString("SQLite")));

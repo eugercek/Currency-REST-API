@@ -19,7 +19,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("today/list")]
-        public List<Currency> Get()
+        public IEnumerable<Currency> Get()
         {
             var list = new List<Currency>();
             foreach (var c in _context.Currencies.AsNoTracking())
@@ -48,7 +48,7 @@ namespace API.Controllers
         */
         [HttpGet]
         [Route("{relative}/list")]
-        public List<Currency> Get(int relative)
+        public IEnumerable<Currency> Get(int relative)
         {
             // TODO Should enhance API or strict API is better?
             // if (relative > 0)
