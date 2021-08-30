@@ -23,8 +23,8 @@ namespace API
 
             services.AddControllers();
             services.AddSwaggerDocument();
-            services.AddDbContext<CurrencyContext>(options => options.UseSqlite("Filename=/home/umut/src/Currencies.db"));
-
+            services.AddDbContext<CurrencyContext>(
+                 options => options.UseSqlite(Configuration.GetConnectionString("SQLite")));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
