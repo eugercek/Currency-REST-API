@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    [Route("[controller]")]
+    [Route("/")]
     public class CurrencyController : Controller
     {
         private readonly CurrencyContext _context;
@@ -17,6 +17,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [Route("today/list")]
         public List<Currency> Get()
         {
             var list = new List<Currency>();
@@ -27,23 +28,16 @@ namespace API.Controllers
             return list;
         }
 
-        private List<Currency> Fake(int n)
+        [HttpGet]
+        [Route("today/{name}")]
+        public Currency Get(string name)
         {
-            var rand = new Random();
-            var curs = new List<Currency>();
-
-            for (int i = 0; i < n; i++)
+            foreach (var c in _context.Currencies.AsNoTracking())
             {
-                curs.Add(new Currency
-                {
-                    Name = rand.NextDouble().ToString(),
-                    BuyingPrice = ((decimal)rand.NextDouble()),
-                    SellingPrice = ((decimal)rand.NextDouble()),
-                });
+                if (c.Name == name)
+                    return c;
             }
-
-            return curs;
-
+            return new Currency();
         }
     }
 }
