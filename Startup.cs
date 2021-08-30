@@ -36,7 +36,24 @@ namespace API
             {
                 options.ReturnHttpNotAcceptable = true;
             }).AddXmlSerializerFormatters();
-            services.AddSwaggerDocument();
+
+            services.AddSwaggerDocument(config =>
+            {
+                config.PostProcess = document =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = "Daily Currency Rates API";
+                    document.Info.Description = "Parsed from https://www.tcmb.gov.tr/kurlar/today.xml";
+                    document.Info.Contact = new NSwag.OpenApiContact
+                    {
+                        Name = "Emin Umut Gerçek",
+                        Email = "umutgercek1999@gmail.com",
+                        Url = "umutgercek.net"
+                    };
+                };
+            });
+
+
             services.AddDbContext<CurrencyContext>(
                  options => options.UseSqlite(Configuration.GetConnectionString("SQLite")));
         }

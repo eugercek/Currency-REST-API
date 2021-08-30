@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Controllers
 {
     // TODO LINQ
+    [ApiController]
     [Route("/")]
     public class CurrencyController : Controller
     {
@@ -24,7 +25,7 @@ namespace API.Controllers
             var list = new List<Currency>();
             foreach (var c in _context.Currencies.AsNoTracking())
             {
-                if (c.Date == DateTime.Today)
+                if (c.Date == DateTime.Today.AddDays(-1))
                     list.Add(c);
             }
             return list;
