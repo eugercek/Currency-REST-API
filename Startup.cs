@@ -21,6 +21,17 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    name: "Policy",
+                    builder =>
+                    {
+                        builder.AllowAnyHeader()
+                               .AllowAnyMethod()
+                               .AllowAnyOrigin();
+                    });
+            });
             services.AddControllers(options =>
             {
                 options.ReturnHttpNotAcceptable = true;
@@ -40,10 +51,13 @@ namespace API
             app.UseRouting();
             app.UseOpenApi();
             app.UseSwaggerUi3();
+            app.UseCors("Policy");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+            app.UseCors("MyPolicy");
+
         }
     }
 }
