@@ -1,6 +1,8 @@
 using System;
+using API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,6 +23,8 @@ namespace API
 
             services.AddControllers();
             services.AddSwaggerDocument();
+            services.AddDbContext<CurrencyContext>(options => options.UseSqlite("Filename=/home/umut/src/Currencies.db"));
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

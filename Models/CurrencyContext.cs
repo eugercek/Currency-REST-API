@@ -9,10 +9,9 @@ namespace API.Models
         public string DBName { get; set; }
         public DbSet<Currency> Currencies { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public CurrencyContext(DbContextOptions<CurrencyContext> options)
+            : base(options)
         {
-            var dbName = "/home/umut/src/Currencies.db";
-            optionsBuilder.UseSqlite($"Filename={dbName}");
         }
     }
 }

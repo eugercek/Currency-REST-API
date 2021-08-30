@@ -9,13 +9,18 @@ namespace API.Controllers
     [Route("[controller]")]
     public class CurrencyController : Controller
     {
+        private readonly CurrencyContext _context;
+
+        public CurrencyController(CurrencyContext context)
+        {
+            _context = context;
+        }
+
         [HttpGet]
         public List<Currency> Get()
         {
-            CurrencyContext db = new CurrencyContext();
-
             var list = new List<Currency>();
-            foreach (var c in db.Currencies.AsNoTracking())
+            foreach (var c in _context.Currencies.AsNoTracking())
             {
                 list.Add(c);
             }
