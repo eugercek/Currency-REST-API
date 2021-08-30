@@ -2,17 +2,24 @@ using System;
 using System.Collections.Generic;
 using API.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    [ApiController]
     [Route("[controller]")]
     public class CurrencyController : Controller
     {
         [HttpGet]
         public List<Currency> Get()
         {
-            return Fake(3);
+            CurrencyContext db = new CurrencyContext();
+
+            var list = new List<Currency>();
+            foreach (var c in db.Currencies.AsNoTracking())
+            {
+                list.Add(c);
+            }
+            return list;
         }
 
         private List<Currency> Fake(int n)
