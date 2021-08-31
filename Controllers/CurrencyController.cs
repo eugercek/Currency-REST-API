@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,13 +23,9 @@ namespace API.Controllers
         [Route("today/list")]
         public ActionResult<IEnumerable<Currency>> Get()
         {
-            var list = new List<Currency>();
-            foreach (var c in _context.Currencies.AsNoTracking())
-            {
-                if (c.Date == DateTime.Today)
-                    list.Add(c);
-            }
-            return list;
+            return _context.Currencies
+                    .Where(c => c.Date == DateTime.Today)
+                    .ToList();
         }
 
         [HttpGet]
@@ -57,13 +54,9 @@ namespace API.Controllers
             //     relative *= -1;
             // }
 
-            var list = new List<Currency>();
-            foreach (var c in _context.Currencies.AsNoTracking())
-            {
-                if (c.Date == DateTime.Today.AddDays(relative * -1))
-                    list.Add(c);
-            }
-            return list;
+            return _context.Currencies
+                    .Where(c => c.Date == DateTime.Today.AddDays(relative * -1))
+                    .ToList();
         }
 
         [HttpGet]
