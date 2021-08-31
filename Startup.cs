@@ -52,8 +52,6 @@ namespace API
             {
                 endpoints.MapControllers();
             });
-            app.UseCors("MyPolicy");
-
         }
     }
 }

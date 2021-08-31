@@ -13,7 +13,7 @@ namespace API.Extensions.Services
                     builder =>
                     {
                         builder.AllowAnyHeader()
-                               .AllowAnyMethod()
+                               .WithMethods("GET")
                                .AllowAnyOrigin();
                     });
             });
