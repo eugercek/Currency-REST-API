@@ -20,12 +20,12 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("today/list")]
-        public IEnumerable<Currency> Get()
+        public ActionResult<IEnumerable<Currency>> Get()
         {
             var list = new List<Currency>();
             foreach (var c in _context.Currencies.AsNoTracking())
             {
-                if (c.Date == DateTime.Today.AddDays(-1))
+                if (c.Date == DateTime.Today)
                     list.Add(c);
             }
             return list;
@@ -33,7 +33,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("today/{name}")]
-        public Currency Get(string name)
+        public ActionResult<Currency> Get(string name)
         {
             foreach (var c in _context.Currencies.AsNoTracking())
             {
@@ -49,7 +49,7 @@ namespace API.Controllers
         */
         [HttpGet]
         [Route("{relative}/list")]
-        public IEnumerable<Currency> Get(int relative)
+        public ActionResult<IEnumerable<Currency>> Get(int relative)
         {
             // TODO Should enhance API or strict API is better?
             // if (relative > 0)
@@ -68,7 +68,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("{relative}/{name}")]
-        public Currency Get(int relative, string name)
+        public ActionResult<Currency> Get(int relative, string name)
         {
             foreach (var c in _context.Currencies.AsNoTracking())
             {
