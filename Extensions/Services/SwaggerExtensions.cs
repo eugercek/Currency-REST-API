@@ -10,7 +10,7 @@ namespace API.Extensions.Services
             {
                 config.PostProcess = document =>
                 {
-                    document.Info.Version = "v1";
+                    document.Info.Version = "v1.0";
                     document.Info.Title = "Daily Currency Rates API";
                     document.Info.Description = "Parsed from https://www.tcmb.gov.tr/kurlar/today.xml";
                     document.Info.Contact = new NSwag.OpenApiContact

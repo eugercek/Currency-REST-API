@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using API.Data.Contracts;
 using API.Data.Models;
-using API.Data.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
