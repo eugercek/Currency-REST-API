@@ -1,5 +1,7 @@
 using System;
+using API.Data.Contracts;
 using API.Data.Models;
+using API.Data.Repository;
 using API.Extensions.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,10 +26,8 @@ namespace API
 
             services.CorsConfiguration();
 
-            services.AddControllers(options =>
-            {
-                options.ReturnHttpNotAcceptable = true;
-            }).AddXmlSerializerFormatters();
+            services.AddControllers(options => options.ReturnHttpNotAcceptable = true)
+                .AddXmlSerializerFormatters();
 
             services.SwaggerConfiguration();
 
@@ -35,6 +35,9 @@ namespace API
             {
                 options.UseSqlite(Configuration.GetConnectionString("SQLite"));
             });
+
+            services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

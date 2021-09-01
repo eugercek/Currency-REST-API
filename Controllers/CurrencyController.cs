@@ -1,35 +1,30 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using API.Data.Contracts;
 using API.Data.Models;
+using API.Data.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    // TODO LINQ
     [ApiController]
     [Route("/")]
     public class CurrencyController : Controller
     {
-        private readonly CurrencyContext _context;
+        private readonly ICurrencyRepository _repo;
 
-        public CurrencyController(CurrencyContext context)
+        public CurrencyController(ICurrencyRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         [HttpGet]
         [Route("today/list")]
         public ActionResult<IEnumerable<Currency>> Get()
         {
-            var list = _context.Currencies
-                        .Where(c => c.Date == DateTime.Today)
-                        .ToList();
-
-            if (list.Any())
+            if (_repo.IsTodayHasData())
             {
-                return list;
+                return Ok(_repo.GetTodayCurrencies());
             }
             return NotFound("There is no currency data for today.");
         }
@@ -38,25 +33,18 @@ namespace API.Controllers
         [Route("today/{name}")]
         public ActionResult<Currency> Get(string name)
         {
-            var cur = _context.Currencies
-                        .Where(c => c.Name == name && c.Date == DateTime.Today)
-                        .FirstOrDefault();
-
-            if (cur == null)
+            if (_repo.IsTodayHasData())
             {
-                var list = _context.Currencies
-                            .Where(c => c.Date == DateTime.Today)
-                            .ToList();
-                if (list.Any())
+                var cur = _repo.GetTodayCurrencyByName(name);
+
+                if (cur == null)
                 {
-                    return NotFound($"There is no {name} data.");
+                    return NotFound($"There is no currency names {name} for today.");
                 }
 
-                return NotFound("There is no currency data for today.");
-
+                return cur;
             }
-
-            return cur;
+            return NotFound("There is no currency data for today.");
         }
 
 
@@ -72,42 +60,29 @@ namespace API.Controllers
             // {
             //     relative *= -1;
             // }
-
-
-            var list = _context.Currencies
-                        .Where(c => c.Date == DateTime.Today.AddDays(relative * -1))
-                        .ToList();
-
-            if (list.Any())
+            if (_repo.IsDayHasData(relative))
             {
-                return list;
+                return Ok(_repo.GetDayCurrencies(relative));
             }
-            return NotFound($"There is no currency data for {relative} day(s) before.");
+            return NotFound("There is no currency data for today.");
         }
 
         [HttpGet]
         [Route("{relative}/{name}")]
-        public ActionResult<Currency> Get(int relative, string name)
+        public ActionResult<Currency> Get(string name, int relative)
         {
-            var cur = _context.Currencies
-                        .Where(c => c.Name == name && c.Date == DateTime.Today.AddDays(relative * -1))
-                        .FirstOrDefault();
-
-            if (cur == null)
+            if (_repo.IsDayHasData(relative))
             {
-                var list = _context.Currencies
-                            .Where(c => c.Date == DateTime.Today)
-                            .ToList();
-                if (list.Any())
+                var cur = _repo.GetDayCurrencyByName(name, relative);
+
+                if (cur == null)
                 {
-                    return NotFound($"There is no {name} data.");
+                    return NotFound($"There is no currency names {name} for {relative} day(s) before.");
                 }
 
-                return NotFound($"There is no currency data for {relative} day(s) before.");
-
+                return cur;
             }
-
-            return cur;
+            return NotFound($"There is no currency data for {relative} day(s) before.");
         }
     }
 }
