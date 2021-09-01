@@ -1,6 +1,6 @@
 using System;
+using API.Data.Models;
 using API.Extensions.Services;
-using API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
