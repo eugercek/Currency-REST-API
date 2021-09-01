@@ -23,21 +23,36 @@ namespace API.Controllers
         [Route("today/list")]
         public ActionResult<IEnumerable<Currency>> Get()
         {
-            return _context.Currencies
-                    .Where(c => c.Date == DateTime.Today)
-                    .ToList();
+            if (_context.Currencies.Any(c => c.Date == DateTime.Today))
+            {
+                return _context.Currencies
+                        .Where(c => c.Date == DateTime.Today)
+                        .ToList();
+            }
+
+            return NotFound("There is no currency data for today.");
         }
 
         [HttpGet]
         [Route("today/{name}")]
         public ActionResult<Currency> Get(string name)
         {
-            foreach (var c in _context.Currencies.AsNoTracking())
+
+            if (_context.Currencies
+                .Any(c => (c.Date == DateTime.Today && c.Name == name)))
             {
-                if (c.Name == name && c.Date == DateTime.Today)
-                    return c;
+                foreach (var c in _context.Currencies.AsNoTracking())
+                {
+                    if (c.Name == name && c.Date == DateTime.Today)
+                        return c;
+                }
             }
-            return new Currency();
+            else if (_context.Currencies.Any(c => c.Date == DateTime.Today))
+            {
+                return NotFound($"There is no {name} data.");
+            }
+
+            return NotFound("There is no currency data for today.");
         }
 
 
@@ -54,21 +69,35 @@ namespace API.Controllers
             //     relative *= -1;
             // }
 
-            return _context.Currencies
-                    .Where(c => c.Date == DateTime.Today.AddDays(relative * -1))
-                    .ToList();
+            if (_context.Currencies.Any(c => c.Date == DateTime.Today.AddDays(relative * -1)))
+            {
+                return _context.Currencies
+                        .Where(c => c.Date == DateTime.Today.AddDays(relative * -1))
+                        .ToList();
+            }
+            return NotFound($"There is no currency data for {relative} day(s) before.");
         }
 
         [HttpGet]
         [Route("{relative}/{name}")]
         public ActionResult<Currency> Get(int relative, string name)
         {
-            foreach (var c in _context.Currencies.AsNoTracking())
+            if (_context.Currencies
+                .Any(c =>
+                (c.Date == DateTime.Today.AddDays(relative * -1) && c.Name == name)))
             {
-                if (c.Name == name && c.Date == DateTime.Today.AddDays(relative))
-                    return c;
+                foreach (var c in _context.Currencies.AsNoTracking())
+                {
+                    if (c.Name == name && c.Date == DateTime.Today.AddDays(relative * -1))
+                        return c;
+                }
             }
-            return new Currency();
+            else if (_context.Currencies.Any(c => c.Date == DateTime.Today.AddDays(relative * -1)))
+            {
+                return NotFound($"There is no {name} data for {relative} day(s) before.");
+            }
+
+            return NotFound($"There is no currency data for {relative} day(s) before.");
         }
     }
 }
