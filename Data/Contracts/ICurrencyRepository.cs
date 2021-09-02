@@ -8,6 +8,8 @@ namespace API.Data.Contracts
 
         bool IsTodayHasData();
         bool IsDayHasData(int before);
+        bool IsCurrencyCodeInData(string code);
+        bool AreCurrencyCodesInData(params string[] code);
 
         IEnumerable<Currency> GetTodayCurrencies();
         IEnumerable<Currency> GetDayCurrencies(int relative);
@@ -17,5 +19,6 @@ namespace API.Data.Contracts
 
         decimal ConvertCurrencyToday(string from, string to);
         decimal ConvertCurrencyDay(string from, string to, int relative);
+
     }
 }

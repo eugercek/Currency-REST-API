@@ -62,12 +62,24 @@ namespace API.Controllers
                 }
                 return BadRequest(errorMessage);
             }
-            else if (_repo.c())
+            else if (!_repo.AreCurrencyCodesInData(from, to))
+            {
+                string errorMessage = "";
+                if (!_repo.IsCurrencyCodeInData(from))
+                {
+                    errorMessage += $"from ({from}) is not in our database\n";
+                }
+                if (!CurrencyCodes.IsCode(to))
+                {
+                    errorMessage += $"to ({to}) is not in our database\n";
+                }
+                return NotFound(errorMessage);
+            }
             else if (_repo.IsTodayHasData())
-                    {
-                        var exchange = _repo.ConvertCurrencyToday(from, to);
-                        return Ok(exchange);
-                    }
+            {
+                var exchange = _repo.ConvertCurrencyToday(from, to);
+                return Ok(exchange);
+            }
             return NotFound("There is no currency data for today.");
         }
 
@@ -89,7 +101,7 @@ namespace API.Controllers
             {
                 return Ok(_repo.GetDayCurrencies(relative));
             }
-            return NotFound("There is no currency data for today.");
+            return NotFound($"There is no currency data for {relative} day(s) before.");
         }
 
         [HttpGet]
@@ -115,14 +127,37 @@ namespace API.Controllers
         {
             if (!CurrencyCodes.AreCodes(from, to))
             {
-                return NotFound("Error in Currency Format.");
+                string errorMessage = "";
+                if (!CurrencyCodes.IsCode(from))
+                {
+                    errorMessage += $"from ({from}) is not valid ISO Currency Code\n";
+                }
+                if (!CurrencyCodes.IsCode(to))
+                {
+                    errorMessage += $"to ({to}) is not valid ISO Currency Code\n";
+                }
+                return BadRequest(errorMessage);
+            }
+            else if (!_repo.AreCurrencyCodesInData(from, to))
+            {
+                string errorMessage = "";
+                if (!_repo.IsCurrencyCodeInData(from))
+                {
+                    errorMessage += $"from ({from}) is not in our database\n";
+                }
+                if (!CurrencyCodes.IsCode(to))
+                {
+                    errorMessage += $"to ({to}) is not in our database\n";
+                }
+                return BadRequest(errorMessage);
             }
             else if (_repo.IsDayHasData(relative))
             {
                 var exchange = _repo.ConvertCurrencyDay(from, to, relative);
                 return Ok(exchange);
             }
-            return NotFound("There is no currency data for today.");
+
+            return NotFound($"There is no currency data for {relative} day(s) before.");
         }
     }
 }

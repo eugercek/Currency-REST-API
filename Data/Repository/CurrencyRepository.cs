@@ -50,5 +50,17 @@ namespace API.Data.Repository
         {
             return getCurrencyByISOCode(from, relative).BuyingPrice / getCurrencyByISOCode(to, relative).BuyingPrice;
         }
+
+        public bool IsCurrencyCodeInData(string code) =>
+            _context.Currencies
+            .Select(c => c.Code)
+            .ToList()
+            .Contains(code);
+
+        public bool AreCurrencyCodesInData(params string[] code) =>
+            _context.Currencies
+            .Select(c => c.Code)
+            .ToList()
+            .ContainsForAll(code);
     }
 }
