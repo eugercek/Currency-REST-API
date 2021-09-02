@@ -26,6 +26,12 @@ namespace API.Data.Repository
             .Where(c => c.Date == DateTime.Today.AddDays(relative * -1))
             .ToList();
 
+        private Currency getCurrencyByISOCode(string code, int relative) =>
+            _context.Currencies
+            .Where(c => c.Date == DateTime.Today.AddDays(relative * -1))
+            .Where(c => c.ISOCode == code)
+            .FirstOrDefault();
+
         public bool IsTodayHasData() => isDayHasData(0);
         public bool IsDayHasData(int before) => isDayHasData(before);
 
@@ -34,5 +40,15 @@ namespace API.Data.Repository
 
         public Currency GetTodayCurrencyByName(string name) => getCurrecyByName(name, 0);
         public Currency GetDayCurrencyByName(string name, int relative) => getCurrecyByName(name, relative);
+
+        public decimal ConvertCurrencyToday(string from, string to)
+        {
+            return getCurrencyByISOCode(from, 0).BuyingPrice / getCurrencyByISOCode(to, 0).BuyingPrice;
+        }
+
+        public decimal ConvertCurrencyDay(string from, string to, int relative)
+        {
+            return getCurrencyByISOCode(from, relative).BuyingPrice / getCurrencyByISOCode(to, relative).BuyingPrice;
+        }
     }
 }

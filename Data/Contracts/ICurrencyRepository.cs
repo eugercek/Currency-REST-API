@@ -14,5 +14,8 @@ namespace API.Data.Contracts
 
         Currency GetTodayCurrencyByName(string name);
         Currency GetDayCurrencyByName(string name, int relative);
+
+        decimal ConvertCurrencyToday(string from, string to);
+        decimal ConvertCurrencyDay(string from, string to, int relative);
     }
 }

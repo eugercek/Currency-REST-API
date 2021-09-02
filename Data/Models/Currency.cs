@@ -10,6 +10,7 @@ namespace API.Data.Models
         public decimal BuyingPrice { get; set; }
         public decimal SellingPrice { get; set; }
         public DateTime Date { get; set; }
+        public string ISOCode;
         // Very sad to see that C# Doesn't have static extension methods
         // https://github.com/dotnet/csharplang/discussions/2505
         // Waiting for the day!
