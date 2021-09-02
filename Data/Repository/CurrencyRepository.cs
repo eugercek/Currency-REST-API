@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using API.Data.Contracts;
 using API.Data.Models;
+using API.Extensions;
 
 namespace API.Data.Repository
 {
@@ -28,8 +29,7 @@ namespace API.Data.Repository
 
         private Currency getCurrencyByISOCode(string code, int relative) =>
             _context.Currencies
-            .Where(c => c.Date == DateTime.Today.AddDays(relative * -1))
-            .Where(c => c.ISOCode == code)
+            .Where(c => c.Code == code && c.Date == DateTime.Today.AddDays(relative * -1))
             .FirstOrDefault();
 
         public bool IsTodayHasData() => isDayHasData(0);

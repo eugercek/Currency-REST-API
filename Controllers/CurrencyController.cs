@@ -45,6 +45,33 @@ namespace API.Controllers
             return NotFound("There is no currency data for today.");
         }
 
+        [HttpGet]
+        [Route("today/{from}/{to}")]
+        public ActionResult<Currency> Get(string from, string to)
+        {
+            if (!CurrencyCodes.AreCodes(from, to))
+            {
+                string errorMessage = "";
+                if (!CurrencyCodes.IsCode(from))
+                {
+                    errorMessage += $"from ({from}) is not valid ISO Currency Code\n";
+                }
+                if (!CurrencyCodes.IsCode(to))
+                {
+                    errorMessage += $"to ({to}) is not valid ISO Currency Code\n";
+                }
+                return BadRequest(errorMessage);
+            }
+            else if (_repo.c())
+            else if (_repo.IsTodayHasData())
+                    {
+                        var exchange = _repo.ConvertCurrencyToday(from, to);
+                        return Ok(exchange);
+                    }
+            return NotFound("There is no currency data for today.");
+        }
+
+
 
         /*
             Gets relative time based on current day.
@@ -77,10 +104,25 @@ namespace API.Controllers
                 {
                     return NotFound($"There is no currency names {name} for {relative} day(s) before.");
                 }
-
                 return cur;
             }
             return NotFound($"There is no currency data for {relative} day(s) before.");
+        }
+
+        [HttpGet]
+        [Route("{relative}/{from}/{to}")]
+        public ActionResult<Currency> Get(string from, string to, int relative)
+        {
+            if (!CurrencyCodes.AreCodes(from, to))
+            {
+                return NotFound("Error in Currency Format.");
+            }
+            else if (_repo.IsDayHasData(relative))
+            {
+                var exchange = _repo.ConvertCurrencyDay(from, to, relative);
+                return Ok(exchange);
+            }
+            return NotFound("There is no currency data for today.");
         }
     }
 }
