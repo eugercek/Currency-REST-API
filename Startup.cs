@@ -33,7 +33,8 @@ namespace API
 
             services.AddDbContext<CurrencyContext>(options =>
             {
-                options.UseSqlite(Configuration.GetConnectionString("SQLite"));
+                // options.UseSqlite(Configuration.GetConnectionString("SQLite"));
+                options.UseNpgsql(Configuration.GetConnectionString("Postgres"));
             });
 
             services.AddScoped<ICurrencyRepository, CurrencyRepository>();

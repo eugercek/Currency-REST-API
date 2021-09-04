@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using API.Data.Contracts;
 using API.Data.Models;
@@ -24,7 +25,7 @@ namespace API.Controllers
             {
                 return Ok(_repo.GetTodayCurrencies());
             }
-            return NotFound("There is no currency data for today.");
+            return NotFound($"There is no currency data for today({DateTime.Today}).");
         }
 
         [HttpGet]

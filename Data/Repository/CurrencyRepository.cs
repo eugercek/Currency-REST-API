@@ -17,6 +17,7 @@ namespace API.Data.Repository
         }
 
         private bool isDayHasData(int relative) => _context.Currencies.Any(c => c.Date == DateTime.Today.AddDays(relative * -1));
+
         private Currency getCurrecyByName(string name, int relative) =>
             _context.Currencies
             .Where(c => c.Name == name && c.Date == DateTime.Today.AddDays(relative * -1))
@@ -31,6 +32,7 @@ namespace API.Data.Repository
             _context.Currencies
             .Where(c => c.Code == code && c.Date == DateTime.Today.AddDays(relative * -1))
             .FirstOrDefault();
+
 
         public bool IsTodayHasData() => isDayHasData(0);
         public bool IsDayHasData(int before) => isDayHasData(before);
