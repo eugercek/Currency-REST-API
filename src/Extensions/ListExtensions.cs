@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace API.Extensions
 {
-    public static class StringExtensions
+    public static class ListExtensions
     {
         public static bool ContainsForAll<T>(this List<T> list, T[] args)
         {

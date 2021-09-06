@@ -27,3 +27,9 @@ docker container ls
 ```sh
 docker exec -it <HASH> bash
 ```
+
+# TODOs
+
+- Fix Swagger
+- ./src/Controllers/CurrencyController.cs TODO Find conventional way to handle time
+- ./src/Controllers/CurrencyController.cs TODO Should enhance API or strict API is better?

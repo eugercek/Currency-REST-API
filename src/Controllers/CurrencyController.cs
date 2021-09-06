@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    // TODO Find conventional way to handle time
     [ApiController]
     [Route("/")]
     public class CurrencyController : Controller

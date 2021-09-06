@@ -6,7 +6,6 @@ namespace API.Extensions
 {
     public static class Extension
     {
-        // TODO
         [Obsolete("Couldn't finish")]
         public static List<string> GetAllISOCurrencySymbols(this CultureInfo cultureInfo)
         {
