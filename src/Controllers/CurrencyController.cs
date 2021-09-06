@@ -19,72 +19,15 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("today/list")]
-        public ActionResult<IEnumerable<Currency>> Get()
-        {
-            if (_repo.IsTodayHasData())
-            {
-                return Ok(_repo.GetTodayCurrencies());
-            }
-            return NotFound($"There is no currency data for today({DateTime.Today}).");
-        }
+        public ActionResult<IEnumerable<Currency>> Get() => Get(0);
 
         [HttpGet]
         [Route("today/{name}")]
-        public ActionResult<Currency> Get(string name)
-        {
-            if (_repo.IsTodayHasData())
-            {
-                var cur = _repo.GetTodayCurrencyByName(name);
-
-                if (cur == null)
-                {
-                    return NotFound($"There is no currency names {name} for today.");
-                }
-
-                return cur;
-            }
-            return NotFound("There is no currency data for today.");
-        }
+        public ActionResult<Currency> Get(string name) => Get(name, 0);
 
         [HttpGet]
         [Route("today/{from}/{to}")]
-        public ActionResult<Currency> Get(string from, string to)
-        {
-            if (!CurrencyCodes.AreCodes(from, to))
-            {
-                string errorMessage = "";
-                if (!CurrencyCodes.IsCode(from))
-                {
-                    errorMessage += $"from ({from}) is not valid ISO Currency Code\n";
-                }
-                if (!CurrencyCodes.IsCode(to))
-                {
-                    errorMessage += $"to ({to}) is not valid ISO Currency Code\n";
-                }
-                return BadRequest(errorMessage);
-            }
-            else if (!_repo.AreCurrencyCodesInData(from, to))
-            {
-                string errorMessage = "";
-                if (!_repo.IsCurrencyCodeInData(from))
-                {
-                    errorMessage += $"from ({from}) is not in our database\n";
-                }
-                if (!CurrencyCodes.IsCode(to))
-                {
-                    errorMessage += $"to ({to}) is not in our database\n";
-                }
-                return NotFound(errorMessage);
-            }
-            else if (_repo.IsTodayHasData())
-            {
-                var exchange = _repo.ConvertCurrencyToday(from, to);
-                return Ok(exchange);
-            }
-            return NotFound("There is no currency data for today.");
-        }
-
-
+        public ActionResult<Currency> Get(string from, string to) => Get(from, to, 0);
 
         /*
             Gets relative time based on current day.
