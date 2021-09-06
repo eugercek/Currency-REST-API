@@ -11,6 +11,8 @@ services:
     image: postgres
     volumes:
       - ${HOME}/db/:/var/lib/postgresql/data:Z
+    ports:
+      - 54321:5432
     environment:
       - POSTGRES_PASSWORD=pass
     restart: unless-stopped
